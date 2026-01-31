@@ -1,8 +1,6 @@
 import { useEffect, useState } from "react";
-import axios from "axios";
+import { createProductApi, updateProductApi, delProductApi, uploadImgApi} from "../utils/api";
 
-const API_BASE = import.meta.env.VITE_API_BASE;
-const API_PATH = import.meta.env.VITE_API_PATH;
 function ProductModal({
   modalType,
   tempProduct,
@@ -72,12 +70,6 @@ function ProductModal({
 
   //更新產品
   const updateProduct = async (id) => {
-    let url=`${API_BASE}/api/${API_PATH}/admin/product`;
-    let method = 'post';
-    if(modalType === 'edit') {
-      url=`${API_BASE}/api/${API_PATH}/admin/product/${id}`;
-      method = 'put';
-    }
     const productData = {
       data:{
         ...tempData,
@@ -89,8 +81,11 @@ function ProductModal({
       }
     }
     try {
-      const response = await axios[method](url, productData);
-      console.log(response.data);
+    if(modalType === 'edit') {
+      await updateProductApi(id, productData);
+    } else {
+      await createProductApi(productData);
+    }
       //成功取得API後須取得新資料及將modal關閉
       getProducts();
       closeModal();
@@ -101,8 +96,8 @@ function ProductModal({
     //刪除產品
   const delProduct = async(id) => {
     try {
-      const response = await axios.delete(`${API_BASE}/api/${API_PATH}/admin/product/${id}`);
-      console.log(response);
+      const response = await delProductApi(id);
+      //console.log(response);
       getProducts();
       closeModal();
     } catch (error) {
@@ -119,7 +114,7 @@ function ProductModal({
     try {
       const formData = new FormData()
       formData.append('file-to-upload', file);
-      const response = await axios.post(`${API_BASE}/api/${API_PATH}/admin/upload`, formData);
+      const response = await uploadImgApi(formData);
 
       //替換主圖
       setTempData((pre) => ({
