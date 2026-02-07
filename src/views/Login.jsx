@@ -39,11 +39,11 @@ function Login({getProducts, setIsAuth}){
       <h1 className="mb-3">請先登入</h1>
       <form className="form-floating" onSubmit={(e)=>onSubmit(e)}> 
         <div className="form-floating mb-3">
-          <input type="email"className="form-control" id="email" name="username" placeholder="name@example.com" value={formData.username} onChange={(e) => handleInputChage(e)}/>
+          <input type="email"className="form-control" id="email" name="username" placeholder="name@example.com" value={formData.username} onChange={(e) => handleInputChage(e)} required/>
           <label htmlFor="floatingInput">Email address</label>
         </div>
         <div className="form-floating">
-          <input type="password" className="form-control" id="password" name="password" placeholder="Password" value={formData.password} onChange={(e) => handleInputChage(e)}/>
+          <input type="password" className="form-control" id="password" name="password" placeholder="Password" value={formData.password} onChange={(e) => handleInputChage(e)} required/>
           <label htmlFor="floatingPassword">Password</label>
         </div>
         <button type="submit" className='btn btn-primary mt-3 w-100'>登入</button>        
